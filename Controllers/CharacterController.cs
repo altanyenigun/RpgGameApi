@@ -21,19 +21,19 @@ namespace RpgGameApi.Controllers
 
         [HttpGet("GetAll")]
         //[Route("GetAll")]
-        public ActionResult<List<Character>> Get()
+        public ActionResult<ServiceResponse<List<Character>>> Get()
         {
             return Ok(_characterService.GetAllCharacters());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<List<Character>> GetSingle(int id)
+        public ActionResult<ServiceResponse<List<Character>>> GetSingle(int id)
         {
             return Ok(_characterService.GetCharacterById(id));
         }
 
         [HttpPost]
-        public ActionResult<List<Character>> AddCharacter(Character newCharacter)
+        public ActionResult<ServiceResponse<List<Character>>> AddCharacter(Character newCharacter)
         {
             return Ok(_characterService.AddCharacter(newCharacter));
         }
