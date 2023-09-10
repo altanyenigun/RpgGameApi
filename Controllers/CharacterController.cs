@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RpgGameApi.Dtos.Character;
 using RpgGameApi.Models;
 using RpgGameApi.Services.CharacterService;
 
@@ -21,19 +22,19 @@ namespace RpgGameApi.Controllers
 
         [HttpGet("GetAll")]
         //[Route("GetAll")]
-        public ActionResult<ServiceResponse<List<Character>>> Get()
+        public ActionResult<ServiceResponse<List<GetCharacterDto>>> Get()
         {
             return Ok(_characterService.GetAllCharacters());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ServiceResponse<List<Character>>> GetSingle(int id)
+        public ActionResult<ServiceResponse<List<GetCharacterDto>>> GetSingle(int id)
         {
             return Ok(_characterService.GetCharacterById(id));
         }
 
         [HttpPost]
-        public ActionResult<ServiceResponse<List<Character>>> AddCharacter(Character newCharacter)
+        public ActionResult<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
         {
             return Ok(_characterService.AddCharacter(newCharacter));
         }

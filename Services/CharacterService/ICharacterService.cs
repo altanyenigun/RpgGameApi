@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RpgGameApi.Dtos.Character;
 using RpgGameApi.Models;
 
 namespace RpgGameApi.Services.CharacterService
 {
     public interface ICharacterService
     {
-        ServiceResponse<List<Character>> GetAllCharacters();
-        ServiceResponse<Character> GetCharacterById(int id);
-        ServiceResponse<List<Character>> AddCharacter(Character newCharacter);
+        ServiceResponse<List<GetCharacterDto>> GetAllCharacters();
+        ServiceResponse<GetCharacterDto> GetCharacterById(int id);
+        ServiceResponse<List<GetCharacterDto>> AddCharacter(AddCharacterDto newCharacter);
     }
 }
