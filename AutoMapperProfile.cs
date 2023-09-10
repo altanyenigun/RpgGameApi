@@ -14,6 +14,7 @@ namespace RpgGameApi
         {
             CreateMap<Character,GetCharacterDto>(); // Character'den GetCharacterDto'ya dönüşüm yapılır!
             CreateMap<AddCharacterDto,Character>(); // AddCharacterDto'dan Character'e dönüşüm yapılır!
+            CreateMap<UpdateCharacterDto,Character>();
         }
     }
 }

@@ -38,5 +38,14 @@ namespace RpgGameApi.Controllers
         {
             return Ok(_characterService.AddCharacter(newCharacter));
         }
+
+        [HttpPut]
+        public ActionResult<ServiceResponse<List<GetCharacterDto>>> UpdateCharacter(UpdateCharacterDto updatedCharacter)
+        {
+            var response = _characterService.UpdateCharacter(updatedCharacter);
+            if(response.Data is null)
+                return NotFound(response);
+            return Ok(response);
+        }
     }
 }
