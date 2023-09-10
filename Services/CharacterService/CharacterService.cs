@@ -32,6 +32,27 @@ namespace RpgGameApi.Services.CharacterService
             return serviceResponse;
         }
 
+        public ServiceResponse<List<GetCharacterDto>> DeleteCharacter(int id)
+        {
+            var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+            try
+            {
+                var character = characters.FirstOrDefault(c => c.Id == id);
+                if (character is null)
+                    throw new Exception($"Character with ID '{id}' not found.");
+
+                characters.Remove(character);
+
+                serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            return serviceResponse;
+        }
+
         public ServiceResponse<List<GetCharacterDto>> GetAllCharacters()
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
@@ -53,10 +74,10 @@ namespace RpgGameApi.Services.CharacterService
             try
             {
                 var character = characters.FirstOrDefault(c => c.Id == updatedCharacter.Id);
-                if(character is null)
+                if (character is null)
                     throw new Exception($"Character with ID '{updatedCharacter.Id}' not found.");
-                
-                _mapper.Map(updatedCharacter,character); // updatedCharacter objesini character objesine maple
+
+                _mapper.Map(updatedCharacter, character); // updatedCharacter objesini character objesine maple
 
                 //without mapper
                 // character.Name = updatedCharacter.Name;
@@ -67,10 +88,11 @@ namespace RpgGameApi.Services.CharacterService
                 // character.Class = updatedCharacter.Class;
 
                 serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                serviceResponse.Success=false;
-                serviceResponse.Message=ex.Message;
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
             }
             return serviceResponse;
         }

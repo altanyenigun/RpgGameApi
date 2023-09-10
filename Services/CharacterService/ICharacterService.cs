@@ -13,5 +13,6 @@ namespace RpgGameApi.Services.CharacterService
         ServiceResponse<GetCharacterDto> GetCharacterById(int id);
         ServiceResponse<List<GetCharacterDto>> AddCharacter(AddCharacterDto newCharacter);
         ServiceResponse<GetCharacterDto> UpdateCharacter (UpdateCharacterDto updatedCharacter);
+        ServiceResponse<List<GetCharacterDto>> DeleteCharacter(int id);
     }
 }
