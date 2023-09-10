@@ -31,5 +31,15 @@ namespace RpgGameApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("Login")]
+        public ActionResult<ServiceResponse<int>> Login(UserLoginDto request)
+        {
+            var response = _authRepo.Login(request.Username,request.Password);
+            if(!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
     }
 }
