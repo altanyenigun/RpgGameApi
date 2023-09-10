@@ -18,6 +18,7 @@ namespace RpgGameApi.Data
 
         public DbSet<Character> Characters => Set<Character>();
         // public DbSet<Character> Characters {get;set;} // Character objesinden oluşacak Characters tablosunu oluştur. Tablo ismini genelde üretilecek modelin çoğul hali yazılır.
+        public DbSet<User> Users => Set<User>();
 
     }
 }
