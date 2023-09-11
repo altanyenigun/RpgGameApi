@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RpgGameApi.Dtos.Character;
 using RpgGameApi.Models;
@@ -9,6 +10,7 @@ using RpgGameApi.Services.CharacterService;
 
 namespace RpgGameApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CharacterController : ControllerBase
@@ -19,7 +21,8 @@ namespace RpgGameApi.Controllers
         {
             _characterService = characterService; // CharacterService'i controllera inject etmiş olduk.
         }
-
+        
+        [AllowAnonymous] // classin başında Authorize varsa ancak burayı Authorize olmadanda çalıştırmak istiyorsak bu attribute'u ekleriz.
         [HttpGet("GetAll")]
         //[Route("GetAll")]
         public ActionResult<ServiceResponse<List<GetCharacterDto>>> Get()
