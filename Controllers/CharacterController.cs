@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,12 +23,13 @@ namespace RpgGameApi.Controllers
             _characterService = characterService; // CharacterService'i controllera inject etmiş olduk.
         }
         
-        [AllowAnonymous] // classin başında Authorize varsa ancak burayı Authorize olmadanda çalıştırmak istiyorsak bu attribute'u ekleriz.
+        //[AllowAnonymous] // classin başında Authorize varsa ancak burayı Authorize olmadanda çalıştırmak istiyorsak bu attribute'u ekleriz.
         [HttpGet("GetAll")]
         //[Route("GetAll")]
         public ActionResult<ServiceResponse<List<GetCharacterDto>>> Get()
         {
-            return Ok(_characterService.GetAllCharacters());
+            int userId = int.Parse(User.Claims.FirstOrDefault(c=> c.Type == ClaimTypes.NameIdentifier)!.Value);
+            return Ok(_characterService.GetAllCharacters(userId));
         }
 
         [HttpGet("{id}")]

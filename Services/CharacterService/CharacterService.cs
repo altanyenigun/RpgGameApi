@@ -51,10 +51,10 @@ namespace RpgGameApi.Services.CharacterService
             return serviceResponse;
         }
 
-        public ServiceResponse<List<GetCharacterDto>> GetAllCharacters()
+        public ServiceResponse<List<GetCharacterDto>> GetAllCharacters(int userId)
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
-            var dbCharacters = _context.Characters.ToList();
+            var dbCharacters = _context.Characters.Where(c=>c.User!.Id  == userId).ToList(); // sadece kullaniciya ait karakterleri getirme
             serviceResponse.Data =  dbCharacters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList(); // select inumarable döner, ancak biz list istediğimiz için en sonda tolist kullanıyoruz.
             return serviceResponse;
         }
