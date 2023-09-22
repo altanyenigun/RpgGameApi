@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using RpgGameApi.Dtos.Character;
+using RpgGameApi.Dtos.Skill;
 using RpgGameApi.Dtos.Weapon;
 using RpgGameApi.Models;
 
@@ -17,6 +18,7 @@ namespace RpgGameApi
             CreateMap<AddCharacterDto,Character>(); // AddCharacterDto'dan Character'e dönüşüm yapılır!
             CreateMap<UpdateCharacterDto,Character>();
             CreateMap<Weapon,GetWeaponDto>();
+            CreateMap<Skill,GetSkillDto>();
         }
     }
 }

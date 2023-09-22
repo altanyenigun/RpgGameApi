@@ -51,7 +51,7 @@ namespace RpgGameApi.Services.CharacterService
 
                 _context.Characters.Remove(character);
                 _context.SaveChanges();
-                serviceResponse.Data = _context.Characters.Where(c=>c.User!.Id == GetUserId()).Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+                serviceResponse.Data = _context.Characters.Where(c => c.User!.Id == GetUserId()).Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace RpgGameApi.Services.CharacterService
         public ServiceResponse<List<GetCharacterDto>> GetAllCharacters()
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
-            var dbCharacters = _context.Characters.Where(c => c.User!.Id == GetUserId()).ToList(); // sadece kullaniciya ait karakterleri getirme
+            var dbCharacters = _context.Characters.Include(c=>c.Weapon).Include(c=>c.Skills).Where(c => c.User!.Id == GetUserId()).ToList(); // sadece kullaniciya ait karakterleri getirme
             serviceResponse.Data = dbCharacters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList(); // select inumarable döner, ancak biz list istediğimiz için en sonda tolist kullanıyoruz.
             return serviceResponse;
         }
@@ -72,7 +72,7 @@ namespace RpgGameApi.Services.CharacterService
         public ServiceResponse<GetCharacterDto> GetCharacterById(int id)
         {
             var serviceResponse = new ServiceResponse<GetCharacterDto>();
-            var dbCharacter = _context.Characters.FirstOrDefault(c => c.Id == id && c.User!.Id == GetUserId());
+            var dbCharacter = _context.Characters.Include(c=>c.Weapon).Include(c=>c.Skills).FirstOrDefault(c => c.Id == id && c.User!.Id == GetUserId());
             serviceResponse.Data = _mapper.Map<GetCharacterDto>(dbCharacter); //character objesini GetCharacterDto objesine mapleme işlemi
             return serviceResponse;
         }
@@ -82,7 +82,7 @@ namespace RpgGameApi.Services.CharacterService
             var serviceResponse = new ServiceResponse<GetCharacterDto>();
             try
             {
-                var character = _context.Characters.Include(c=>c.User).FirstOrDefault(c => c.Id == updatedCharacter.Id);
+                var character = _context.Characters.Include(c => c.User).FirstOrDefault(c => c.Id == updatedCharacter.Id);
                 if (character is null || character.User!.Id != GetUserId())
                     throw new Exception($"Character with ID '{updatedCharacter.Id}' not found.");
 
@@ -104,6 +104,45 @@ namespace RpgGameApi.Services.CharacterService
                 serviceResponse.Message = ex.Message;
             }
             return serviceResponse;
+        }
+
+        public ServiceResponse<GetCharacterDto> AddCharacterSkill(AddCharacterSkillDto newCharacterSkill)
+        {
+            var response = new ServiceResponse<GetCharacterDto>();
+            try
+            {
+                var character = _context.Characters
+                    .Include(c => c.Weapon)
+                    .Include(c => c.Skills)
+                    .FirstOrDefault(c => c.Id == newCharacterSkill.CharacterId && c.User!.Id == GetUserId());
+                
+                if(character is null)
+                {
+                    response.Success = false;
+                    response.Message = "Character not found.";
+                    return response;
+                }
+
+                var skill = _context.Skills.FirstOrDefault(s=>s.Id == newCharacterSkill.SkillId);
+
+                if(skill is null)
+                {
+                    response.Success = false;
+                    response.Message = "Skill not found.";
+                    return response;
+                }
+
+                character.Skills!.Add(skill);
+                _context.SaveChanges();
+                response.Data = _mapper.Map<GetCharacterDto>(character);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+            }
+
+            return response;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace RpgGameApi.Controllers
         {
             _characterService = characterService; // CharacterService'i controllera inject etmiş olduk.
         }
-        
+
         //[AllowAnonymous] // classin başında Authorize varsa ancak burayı Authorize olmadanda çalıştırmak istiyorsak bu attribute'u ekleriz.
         [HttpGet("GetAll")]
         //[Route("GetAll")]
@@ -47,7 +47,7 @@ namespace RpgGameApi.Controllers
         public ActionResult<ServiceResponse<List<GetCharacterDto>>> UpdateCharacter(UpdateCharacterDto updatedCharacter)
         {
             var response = _characterService.UpdateCharacter(updatedCharacter);
-            if(response.Data is null)
+            if (response.Data is null)
                 return NotFound(response);
             return Ok(response);
         }
@@ -56,9 +56,15 @@ namespace RpgGameApi.Controllers
         public ActionResult<ServiceResponse<List<GetCharacterDto>>> DeleteCharacter(int id)
         {
             var response = _characterService.DeleteCharacter(id);
-            if(response.Data is null)
+            if (response.Data is null)
                 return NotFound(response);
             return Ok(response);
+        }
+
+        [HttpPost("Skill")]
+        public ActionResult<ServiceResponse<GetCharacterDto>> AddCharacterSkill(AddCharacterSkillDto newCharacterSkill)
+        {
+            return Ok(_characterService.AddCharacterSkill(newCharacterSkill));
         }
     }
 }
