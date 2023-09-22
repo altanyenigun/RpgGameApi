@@ -28,8 +28,7 @@ namespace RpgGameApi.Controllers
         //[Route("GetAll")]
         public ActionResult<ServiceResponse<List<GetCharacterDto>>> Get()
         {
-            int userId = int.Parse(User.Claims.FirstOrDefault(c=> c.Type == ClaimTypes.NameIdentifier)!.Value);
-            return Ok(_characterService.GetAllCharacters(userId));
+            return Ok(_characterService.GetAllCharacters());
         }
 
         [HttpGet("{id}")]

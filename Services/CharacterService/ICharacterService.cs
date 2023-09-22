@@ -9,7 +9,7 @@ namespace RpgGameApi.Services.CharacterService
 {
     public interface ICharacterService
     {
-        ServiceResponse<List<GetCharacterDto>> GetAllCharacters(int userId);
+        ServiceResponse<List<GetCharacterDto>> GetAllCharacters();
         ServiceResponse<GetCharacterDto> GetCharacterById(int id);
         ServiceResponse<List<GetCharacterDto>> AddCharacter(AddCharacterDto newCharacter);
         ServiceResponse<GetCharacterDto> UpdateCharacter (UpdateCharacterDto updatedCharacter);

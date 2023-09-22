@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using RpgGameApi.Data;
@@ -14,11 +15,16 @@ namespace RpgGameApi.Services.CharacterService
         private readonly IMapper _mapper;
         private readonly DataContext _context;
 
-        public CharacterService(IMapper mapper, DataContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public CharacterService(IMapper mapper, DataContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _mapper = mapper;
+            _httpContextAccessor=httpContextAccessor;
         }
+
+        private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
         public ServiceResponse<List<GetCharacterDto>> AddCharacter(AddCharacterDto newCharacter)
         {
@@ -51,10 +57,10 @@ namespace RpgGameApi.Services.CharacterService
             return serviceResponse;
         }
 
-        public ServiceResponse<List<GetCharacterDto>> GetAllCharacters(int userId)
+        public ServiceResponse<List<GetCharacterDto>> GetAllCharacters()
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
-            var dbCharacters = _context.Characters.Where(c=>c.User!.Id  == userId).ToList(); // sadece kullaniciya ait karakterleri getirme
+            var dbCharacters = _context.Characters.Where(c=>c.User!.Id  == GetUserId()).ToList(); // sadece kullaniciya ait karakterleri getirme
             serviceResponse.Data =  dbCharacters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList(); // select inumarable döner, ancak biz list istediğimiz için en sonda tolist kullanıyoruz.
             return serviceResponse;
         }
