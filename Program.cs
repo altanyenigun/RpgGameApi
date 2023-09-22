@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RpgGameApi.Data;
 using RpgGameApi.Services.CharacterService;
+using RpgGameApi.Services.WeaponService;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,7 @@ builder.Services.AddSwaggerGen(c=>{
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<ICharacterService,CharacterService>();
 builder.Services.AddScoped<IAuthRepository,AuthRepository>();
+builder.Services.AddScoped<IWeaponService,WeaponService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
         options.TokenValidationParameters = new TokenValidationParameters
